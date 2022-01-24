@@ -26,7 +26,9 @@ Route::prefix('admin')->group( function(){
         Route::get('/settings',[AdminController::class, 'settings'])->name('admin.settings');
         Route::match(['get', 'post'],'/check-current-pwd',[AdminController::class, 'CurrentPwd']);
         Route::post('/update-current-pwd',[AdminController::class, 'UpdateCurrentPwd'])->name('admin.updateChkPwd');
+        Route::match(['get', 'post'],'/update-details',[AdminController::class, 'UpdateAdminDetails'])->name('admin.updateAdminDetails');
         Route::get('/logout',[AdminController::class, 'logout'])->name('admin.logout');
+        
 
     });
 

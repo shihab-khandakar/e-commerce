@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Update Admin Password</h1>
+                    <h1 class="m-0 text-dark">Update Admin Details</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-                        <li class="breadcrumb-item active">Update Admin Password </li>
+                        <li class="breadcrumb-item active"> Admin Details</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -29,7 +29,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Update Admin Password</h3>
+                            <h3 class="card-title">Update Admin Details</h3>
                         </div>
                         <!-- /.card-header -->
 
@@ -45,37 +45,47 @@
                             </div>
                         @endif
 
+                        @if ($errors->any())
+                            <div class="alert alert-danger" style="margin-top:10px;">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <!-- form start -->
-                        <form method="post" action="{{route('admin.updateChkPwd')}}" id="updatePasswordForm" name = "updatePasswordForm" role="form">
+                        <form method="post" action="{{route('admin.updateAdminDetails')}}" id="updateAdminDetails" name = "updateAdminDetails" enctype="multipart/form-data" role="form">
                             @csrf
                             <div class="card-body">
-                                {{-- <div class="form-group">
-                                    <label for="exampleInputEmail1">Admin Name</label>
-                                    <input type="text" name="admin_name" id="admin_name" class="form-control" value="{{ $adminDetail->name }}" >
-                                </div> --}}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Admin Email</label>
-                                    <input class="form-control" value="{{ $adminDetail->email }}" readonly="">
+                                    <input class="form-control" value="{{ Auth::guard('admin')->user()->email }}" readonly="">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Admin Type</label>
-                                    <input class="form-control" value="{{ $adminDetail->type }}" readonly="">
+                                    <input class="form-control" value="{{ Auth::guard('admin')->user()->type }}" readonly="">
                                 </div>
                                 <div class="form-group">
-                                    <label for="CurentPassword"> Curent Password</label>
-                                    <input type="password" name="current_pwd" class="form-control" id="current_pwd"
-                                        placeholder="Enter Curent Password" required >
-                                    <span id="chkCurrentPwd"></span>
+                                    <label for="admin_name"> Name</label>
+                                    <input type="text" name="admin_name" class="form-control" id="admin_name" value="{{ Auth::guard('admin')->user()->name }}"
+                                        placeholder="Enter Admin Name" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="CurentPassword"> New Password</label>
-                                    <input type="password" name="new_pwd" class="form-control" id="new_pwd"
-                                        placeholder="Enter New Password" required>
+                                    <label for="admin_mobile"> Mobile </label>
+                                    <input type="text" name="admin_mobile" class="form-control" id="admin_mobile" value="{{ Auth::guard('admin')->user()->mobile }}"
+                                        placeholder="Enter Mobile Number" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="CurentPassword"> Confirm Password</label>
-                                    <input type="password" name="confirm_pwd" class="form-control" id="confirm_pwd"
-                                        placeholder="Enter Confirm Password" required>
+                                    <label for="admin_image"> Admin Image</label>
+                                    <input type="file" name="admin_image" class="form-control" id="admin_image" accept="image/*">
+                                    @if (!empty(Auth::guard('admin')->user()->image))
+
+                                        {{-- <a href="{{asset('images/admin_images/admin_photos/'.Auth::guard('admin')->user()->image)}}">View Image</a> --}}
+                                        <input type="hidden" name="current_admin_image" value="{{Auth::guard('admin')->user()->image}}">
+                                        
+                                    @endif
                                 </div>
                             </div>
                             <!-- /.card-body -->
