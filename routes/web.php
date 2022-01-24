@@ -23,10 +23,10 @@ Route::prefix('admin')->group( function(){
     Route::group(['middleware'=>['admin']], function(){
 
         Route::get('/dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/settings',[AdminController::class, 'settings'])->name('admin.settings');
+        Route::get('/update-admin-password',[AdminController::class, 'settings'])->name('admin.settings');
         Route::match(['get', 'post'],'/check-current-pwd',[AdminController::class, 'CurrentPwd']);
         Route::post('/update-current-pwd',[AdminController::class, 'UpdateCurrentPwd'])->name('admin.updateChkPwd');
-        Route::match(['get', 'post'],'/update-details',[AdminController::class, 'UpdateAdminDetails'])->name('admin.updateAdminDetails');
+        Route::match(['get', 'post'],'/update-admin-details',[AdminController::class, 'UpdateAdminDetails'])->name('admin.updateAdminDetails');
         Route::get('/logout',[AdminController::class, 'logout'])->name('admin.logout');
         
 

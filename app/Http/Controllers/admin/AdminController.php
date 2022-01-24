@@ -14,6 +14,7 @@ use Image;
 class AdminController extends Controller
 {
     public function dashboard(){
+        Session::put('page','dashboard');
         return view('admin.admin_dashboard');
     }
 
@@ -45,6 +46,7 @@ class AdminController extends Controller
 
 
     public function settings(){
+        Session::put('page','update-admin-password');
         // echo '<pre>';print_r( Auth::guard('admin')->user());die;
         // $adminDetail = Admin::where('email',Auth::guard('admin')->user()->email)->first();
         $adminDetail = Auth::guard('admin')->user();
@@ -91,6 +93,7 @@ class AdminController extends Controller
 
 
     public function UpdateAdminDetails(Request $request){
+        Session::put('page','update-admin-details');
 
         // $adminDetail = Auth::guard('admin')->user();
 

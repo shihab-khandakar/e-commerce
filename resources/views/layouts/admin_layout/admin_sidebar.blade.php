@@ -3,7 +3,7 @@
     <a href="index3.html" class="brand-link">
       <img src="{{asset('images/admin_images/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">E-Commerce</span>
     </a>
 
     <!-- Sidebar -->
@@ -23,7 +23,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
           <li class="nav-item">
-            <a href="/admin/dashboard" class="nav-link">
+
+            @if (Session::get('page')=='dashboard')
+            <?php $active = 'active'; ?>
+            @else
+            <?php $active = ""; ?>
+            @endif
+
+            <a href="/admin/dashboard" class="nav-link {{$active}}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               
               <p>
@@ -31,8 +38,15 @@
               </p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link ">
+
+          @if (Session::get('page')=='update-admin-details' || Session::get('page')=='update-admin-password')
+            <?php $active = 'active'; ?>
+            @else
+            <?php $active = ""; ?>
+          @endif
+
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link {{$active}} ">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Settings
@@ -40,14 +54,28 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+
+              @if (Session::get('page')=='update-admin-details')
+                <?php $active = 'active'; ?>
+                @else
+                <?php $active = ""; ?>
+              @endif
+
               <li class="nav-item">
-                <a href="/admin/update-details" class="nav-link">
+                <a href="/admin/update-admin-details" class="nav-link {{$active}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Update Admin Details</p>
                 </a>
               </li>
+
+              @if (Session::get('page')=='update-admin-password')
+                <?php $active = 'active'; ?>
+                @else
+                <?php $active = ""; ?>
+              @endif
+              
               <li class="nav-item">
-                <a href="/admin/settings" class="nav-link">
+                <a href="/admin/update-admin-password" class="nav-link {{$active}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Update Admin Password</p>
                 </a>
