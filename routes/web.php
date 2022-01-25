@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\SectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,11 @@ Route::prefix('admin')->group( function(){
         Route::post('/update-current-pwd',[AdminController::class, 'UpdateCurrentPwd'])->name('admin.updateChkPwd');
         Route::match(['get', 'post'],'/update-admin-details',[AdminController::class, 'UpdateAdminDetails'])->name('admin.updateAdminDetails');
         Route::get('/logout',[AdminController::class, 'logout'])->name('admin.logout');
-        
+
+        // This route for Section Panel
+
+        Route::get('/sections',[SectionController::class, 'section'])->name('admin.section');
+        Route::post('/update-section-status',[SectionController::class, 'updateSectionStatus']);
 
     });
 
