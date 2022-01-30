@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\SectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,15 @@ Route::prefix('admin')->group( function(){
 
         Route::get('/sections',[SectionController::class, 'section'])->name('admin.section');
         Route::post('/update-section-status',[SectionController::class, 'updateSectionStatus']);
+
+        // This route for Categories Panel
+
+        Route::get('/categories',[CategoryController::class, 'categories'])->name('admin.categories');
+        Route::post('/update-category-status',[CategoryController::class, 'updateCategoryStatus']);
+        Route::match(['get', 'post'],'add-edit-category/{id?}',[CategoryController::class, 'addEditCategory']);
+        Route::post('/append-category-level',[CategoryController::class, 'appendCategoryLavel']);
+        Route::get('/delete-category-image/{id}',[CategoryController::class, 'deleteCategoryImage']);
+        Route::get('/delete-category/{id}',[CategoryController::class, 'deleteCategory']);
 
     });
 

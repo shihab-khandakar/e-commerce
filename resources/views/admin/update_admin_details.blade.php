@@ -82,7 +82,7 @@
                                     <input type="file" name="admin_image" class="form-control" id="admin_image" accept="image/*">
                                     @if (!empty(Auth::guard('admin')->user()->image))
 
-                                        {{-- <a href="{{asset('images/admin_images/admin_photos/'.Auth::guard('admin')->user()->image)}}">View Image</a> --}}
+                                        <a href="{{asset('images/admin_images/admin_photos/'.Auth::guard('admin')->user()->image)}}">View Image</a>
                                         <input type="hidden" name="current_admin_image" value="{{Auth::guard('admin')->user()->image}}">
                                         
                                     @endif

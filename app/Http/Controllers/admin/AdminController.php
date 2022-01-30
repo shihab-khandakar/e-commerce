@@ -131,6 +131,7 @@ class AdminController extends Controller
                     // echo "<pre>";print_r($imagePath);die;
                     //Upload the Image
                      Image::make($image_tmp)->save($imagePath);
+                     $data['admin_image'] = $imageName;
                     // echo "<pre>";print_r($saveImage);die;
                 }else if(!empty($data['current_admin_image'])){
                     $imageName = $data['current_admin_image'];

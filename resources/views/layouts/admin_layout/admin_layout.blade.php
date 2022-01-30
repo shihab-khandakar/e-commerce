@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="{{asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
   <!-- iCheck -->
   <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
   <!-- JQVMap -->
@@ -71,6 +74,12 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- Select2 -->
+<script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+<script>
+   //Initialize Select2 Elements
+   $('.select2').select2()
+</script>
 <!-- DataTables -->
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
@@ -80,6 +89,14 @@
 <script>
   $(function () {
     $("#sections").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+<script>
+  $(function () {
+    $("#category").DataTable({
       "responsive": true,
       "autoWidth": false,
     });
@@ -113,5 +130,7 @@
 
   {{-- Custom Admin js files --}}
 <script src="{{asset('js/admin_js/admin_script.js')}}"></script>
+ {{-- Sweet Alert cdn --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
