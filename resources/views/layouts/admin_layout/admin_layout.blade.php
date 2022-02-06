@@ -86,6 +86,7 @@
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 <!-- page script -->
+{{-- Section DataTable --}}
 <script>
   $(function () {
     $("#sections").DataTable({
@@ -94,9 +95,19 @@
     });
   });
 </script>
+{{-- Category DataTable --}}
 <script>
   $(function () {
     $("#category").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+{{-- Product DataTable --}}
+<script>
+  $(function () {
+    $("#product").DataTable({
       "responsive": true,
       "autoWidth": false,
     });

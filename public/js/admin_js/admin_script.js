@@ -69,6 +69,30 @@ $(document).ready(function() {
 
     });
 
+
+    //Update Product Status
+
+    $(".updateProductStatus").click(function(){
+        var status = $(this).text();
+        var product_id = $(this).attr("product_id");
+
+        $.ajax({
+            type: "POST",
+            url:"/admin/update-product-status",
+            data:{status:status,product_id:product_id},
+            success: function(response){
+               if(response['status']==0){
+                $("#product-"+product_id).html("<a class='updateProductStatus' href='javascript:void(0)'>Inactive</a>");
+               }else if(response['status']==1){
+                $("#product-"+product_id).html("<a class='updateProductStatus' href='javascript:void(0)'>Active</a>");
+               }
+            },error:function(){
+                alert("Error");
+            }
+        });
+
+    });
+
     //Append Category Level
 
     $("#section_id").change(function(){

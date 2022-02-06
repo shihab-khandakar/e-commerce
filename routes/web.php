@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,17 @@ Route::prefix('admin')->group( function(){
         Route::post('/append-category-level',[CategoryController::class, 'appendCategoryLavel']);
         Route::get('/delete-category-image/{id}',[CategoryController::class, 'deleteCategoryImage']);
         Route::get('/delete-category/{id}',[CategoryController::class, 'deleteCategory']);
+
+
+        // This Route for Products Panel
+
+        Route::get('/products',[ProductController::class, 'products'])->name('admin.products');
+        Route::post('/update-product-status',[ProductController::class, 'updateProductStatus']);
+        Route::match(['get', 'post'],'add-edit-product/{id?}',[ProductController::class, 'addEditProduct']);
+        Route::get('/delete-product-image/{id}',[ProductController::class, 'deleteProductImage']);
+        Route::get('/delete-product-video/{id}',[ProductController::class, 'deleteProductVideo']);
+        Route::get('/delete-product/{id}',[ProductController::class, 'deleteProduct']);
+
 
     });
 

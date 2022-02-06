@@ -15,4 +15,8 @@ class Section extends Model
         'name','status'
     ];
 
+    public function categories(){
+        return $this->hasMany('App\Models\Category','section_id')->where(['parent_id'=>'ROOT','status'=>1])->with('subcategories');
+    }
+
 }
