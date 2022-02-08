@@ -82,8 +82,9 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{url('admin/add-edit-product/'. $product->id)}}">Edit</a>&nbsp;&nbsp;
-                                            <a href="javascript:void(0)" class="confirmDelete" record="product" recordid="{{$product->id}}">Delete</a>
+                                            <a title="Add/Edit Attribute" href="{{url('admin/add-attributes/'. $product->id)}}"><i class="fa fa-plus"></i></a>&nbsp;
+                                            <a title="Edit Product" href="{{url('admin/add-edit-product/'. $product->id)}}"><i class="fa fa-edit"></i></a>&nbsp;
+                                            <a title="Delete Product" href="javascript:void(0)" class="confirmDelete" record="product" recordid="{{$product->id}}"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach

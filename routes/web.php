@@ -56,6 +56,11 @@ Route::prefix('admin')->group( function(){
         Route::get('/delete-product-video/{id}',[ProductController::class, 'deleteProductVideo']);
         Route::get('/delete-product/{id}',[ProductController::class, 'deleteProduct']);
 
+        // This Route for Products Attributes Panel
+        Route::match(['get', 'post'],'add-attributes/{id?}',[ProductController::class, 'addAttributes']);
+        Route::post('edit-attributes/{id}',[ProductController::class, 'editAttributes']);
+        Route::post('/update-attribute-status',[ProductController::class, 'updateAttributeStatus']);
+        Route::get('/delete-attribute/{id}',[ProductController::class, 'deleteAttribute']);
 
     });
 
