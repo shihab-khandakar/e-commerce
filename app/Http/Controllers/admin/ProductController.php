@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\ProductsImage;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -70,6 +72,7 @@ class ProductController extends Controller
             // Product Validation
             $rules = [
                 'category_id'=>'required',
+                'brand_id'=>'required',
                 'product_name' => 'required | regex:/^[\pL\s-]+$/',
                 'product_code' => 'required | regex:/^[\w-]*$/',
                 'product_price' => 'required | numeric',
@@ -77,6 +80,7 @@ class ProductController extends Controller
             ];
             $customMessage = [
                 'category_id.required' => 'Category is required',
+                'brand_id.required' => 'Category is required',
                 'product_name.required' => 'Product Name is required',
                 'product_name.regex' => 'Valid name is required',
                 'product_code.required' => 'Product Code is required',
@@ -147,6 +151,7 @@ class ProductController extends Controller
             // echo '<pre>'; print_r($categoryDetails);die;
 
             $product->section_id = $categoryDetails['section_id'];
+            $product->brand_id = $data['brand_id'];
             $product->category_id = $data['category_id'];
             $product->product_name = $data['product_name'];
             $product->product_code = $data['product_code'];
@@ -189,8 +194,13 @@ class ProductController extends Controller
         $categories = json_decode(json_encode($categories), true);
         // echo '<pre>'; print_r($categories);die;
 
+        // Get All Brands
 
-        return view('admin.products.add_edit_product',compact('title','febricArray','sleeveArray','patternArray','fitArray','occasionArray','categories','productdata'));
+        $brands = Brand::where('status',1)->get();
+        $brands = json_decode(json_encode($brands), true);
+
+
+        return view('admin.products.add_edit_product',compact('title','febricArray','sleeveArray','patternArray','fitArray','occasionArray','categories','productdata','brands'));
 
 
     }
@@ -372,6 +382,110 @@ class ProductController extends Controller
         Session::flash('success_message',$message);
 
         return redirect()->back();
+
+    }
+
+
+    public function addImages(Request $request, $id){
+
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // echo '<pre>'; print_r($data);die;
+            if($request->hasFile('images')){
+                // echo "test";die;
+                $images = $request->file('images');
+                // echo '<pre>'; print_r($images);die;
+                foreach($images as $key => $image){
+                    $productImage = new ProductsImage;
+                    $image_tmp = Image::make($image);
+                    $extension = $image->getClientOriginalExtension();
+                    $imageName = rand(111,99999). time().'.' . $extension;
+                    //image path
+                    $large_image_path = 'images/product_images/large/'.$imageName;
+                    $medium_image_path = 'images/product_images/medium/'.$imageName;
+                    $small_image_path = 'images/product_images/small/'.$imageName;
+                    //image resize
+                    Image::make($image_tmp)->save($large_image_path);
+                    Image::make($image_tmp)->resize(520,600)->save($medium_image_path);
+                    Image::make($image_tmp)->resize(260,300)->save($small_image_path);
+                    $data['images'] = $imageName;
+                    //Save main image in the product table
+                    $productImage->image = $imageName;
+                    $productImage->product_id = $id;
+                    $productImage->status = 1;
+                    $productImage->save();
+
+                }
+
+                $message = 'Product images Added Successfully';
+                Session::flash('success_message',$message);
+                return redirect()->back();
+            }
+        }
+
+        $productdata = Product::select('id','product_name','product_code','product_color','main_image')->with('images')->find($id);
+        $productdata = json_decode(json_encode($productdata), true);
+        // echo '<pre>'; print_r($productdata);die;
+
+
+        $title = "Add Product Images";
+
+        return view('admin.products.add_images',compact('productdata','title'));
+
+
+    }
+
+
+    public function updateImageStatus(Request $request){
+
+        if($request->ajax()){
+            $data = $request->all();
+            // echo '<pre>'; print_r($data);die;
+            if($data['status']== 'Active'){
+                $status= 0;
+            }else{
+                $status = 1;
+            }
+
+            ProductsImage::where('id', $data['image_id'])->update(['status'=> $status]);
+            return response()->json(['status'=>$status,'image_id'=>$data['image_id']]);
+
+        }
+
+    }
+
+
+    public function deleteImage($id) {
+
+          //get product image
+          $productImage = ProductsImage::select('image')->where('id',$id)->first();
+          //get product image path
+          $small_image_path = 'images/product_images/small/';
+          $medium_image_path = 'images/product_images/medium/';
+          $large_image_path = 'images/product_images/large/';
+  
+          //delete product Small image if exits in small folders
+          if(file_exists($small_image_path.$productImage->image)){
+              unlink($small_image_path.$productImage->image);
+          }
+          //delete product medium image if exits in medium folders
+          if(file_exists($medium_image_path.$productImage->image)){
+              unlink($medium_image_path.$productImage->image);
+          }
+          //delete product large image if exits in large folders
+          if(file_exists($large_image_path.$productImage->image)){
+              unlink($large_image_path.$productImage->image);
+          }
+  
+          //delete product image from product table
+  
+          ProductsImage::where('id',$id)->delete();
+  
+          $message = 'Product image has been deleted';
+          Session::flash('success_message',$message);
+  
+          return redirect()->back();
+  
 
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SectionController;
@@ -37,6 +38,14 @@ Route::prefix('admin')->group( function(){
         Route::get('/sections',[SectionController::class, 'section'])->name('admin.section');
         Route::post('/update-section-status',[SectionController::class, 'updateSectionStatus']);
 
+        // This route for Brand Panel
+
+        Route::get('/brands',[BrandController::class, 'brands']);
+        Route::post('/update-brand-status',[BrandController::class, 'updateBrandStatus']);
+        Route::match(['get', 'post'],'add-edit-brand/{id?}',[BrandController::class, 'addEditBrand']);
+        Route::get('/delete-brand/{id}',[BrandController::class, 'deleteBrand']);
+
+
         // This route for Categories Panel
 
         Route::get('/categories',[CategoryController::class, 'categories'])->name('admin.categories');
@@ -61,6 +70,12 @@ Route::prefix('admin')->group( function(){
         Route::post('edit-attributes/{id}',[ProductController::class, 'editAttributes']);
         Route::post('/update-attribute-status',[ProductController::class, 'updateAttributeStatus']);
         Route::get('/delete-attribute/{id}',[ProductController::class, 'deleteAttribute']);
+
+        // This Route for Products Images Panel
+        Route::match(['get', 'post'],'add-images/{id?}',[ProductController::class, 'addImages']);
+        Route::post('/update-image-status',[ProductController::class, 'updateImageStatus']);
+        Route::get('/delete-image/{id}',[ProductController::class, 'deleteImage']);
+
 
     });
 

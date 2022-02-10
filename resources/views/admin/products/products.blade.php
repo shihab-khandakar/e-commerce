@@ -76,14 +76,15 @@
                                         <td>{{$product->section->name}}</td>
                                         <td>
                                             @if ($product->status == 1)
-                                              <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}" href="javascript:void(0)">Active</a>
+                                              <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}" href="javascript:void(0)"><i class="fas fa-toggle-on" aria-hidden="true" status="Active"></i></a>
                                             @else
-                                            <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}" href="javascript:void(0)">Inactive</a>
+                                            <a class="updateProductStatus" id="product-{{$product->id}}" product_id="{{$product->id}}" href="javascript:void(0)"><i class="fas fa-toggle-on" aria-hidden="true" status="Inactive"></i></a>
                                             @endif
                                         </td>
-                                        <td>
-                                            <a title="Add/Edit Attribute" href="{{url('admin/add-attributes/'. $product->id)}}"><i class="fa fa-plus"></i></a>&nbsp;
-                                            <a title="Edit Product" href="{{url('admin/add-edit-product/'. $product->id)}}"><i class="fa fa-edit"></i></a>&nbsp;
+                                        <td style=" width:100px;">
+                                            <a title="Add/Edit Attribute" href="{{url('admin/add-attributes/'. $product->id)}}"><i class="fa fa-plus"></i></a>&nbsp;&nbsp;
+                                            <a title="Add Images" href="{{url('admin/add-images/'. $product->id)}}"><i class="fa fa-plus-circle"></i></a>&nbsp;&nbsp;
+                                            <a title="Edit Product" href="{{url('admin/add-edit-product/'. $product->id)}}"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
                                             <a title="Delete Product" href="javascript:void(0)" class="confirmDelete" record="product" recordid="{{$product->id}}"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
