@@ -42,7 +42,7 @@
                         @endif
 
                         <div class="card-body">
-                            <table id="category" class="table table-bordered table-striped">
+                            <table id="categories" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>Id</th>

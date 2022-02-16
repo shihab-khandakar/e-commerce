@@ -95,10 +95,19 @@
     });
   });
 </script>
+{{-- Brands DataTable --}}
+<script>
+  $(function () {
+    $("#brands").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
 {{-- Category DataTable --}}
 <script>
   $(function () {
-    $("#category").DataTable({
+    $("#categories").DataTable({
       "responsive": true,
       "autoWidth": false,
     });

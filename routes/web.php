@@ -5,14 +5,15 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SectionController;
+use App\Http\Controllers\front\IndexController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -80,3 +81,11 @@ Route::prefix('admin')->group( function(){
     });
 
 });
+
+
+// All The Front Route defain here
+
+    
+Route::get('/',[IndexController::class, 'index']);
+
+

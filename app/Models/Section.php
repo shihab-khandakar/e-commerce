@@ -15,6 +15,13 @@ class Section extends Model
         'name','status'
     ];
 
+    public static function sections(){
+        $getSection = Section::with('categories')->where('status',1)->get();
+        $getSection = json_decode(json_encode($getSection), true);
+        // echo '<pre>'; print_r($getSection);die;
+        return $getSection;
+    }
+
     public function categories(){
         return $this->hasMany('App\Models\Category','section_id')->where(['parent_id'=>'ROOT','status'=>1])->with('subcategories');
     }

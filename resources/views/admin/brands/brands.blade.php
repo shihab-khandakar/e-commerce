@@ -42,7 +42,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="sections" class="table table-bordered table-striped">
+                            <table id="brands" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
