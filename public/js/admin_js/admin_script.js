@@ -46,6 +46,29 @@ $(document).ready(function() {
 
     });
 
+       //Update Banners Status
+
+       $(document).on("click",".updateBannerStatus",function(){
+        var status = $(this).children("i").attr("status");
+        var banner_id = $(this).attr("banner_id");
+      
+        $.ajax({
+            type: "POST",
+            url:"/admin/update-banner-status",
+            data:{status:status,banner_id:banner_id},
+            success: function(response){
+               if(response['status']==0){
+                $("#banner-"+banner_id).html("<i class='fas fa-toggle-off' aria-hidden='true' status='Inactive'></i>");
+               }else if(response['status']==1){
+                $("#banner-"+banner_id).html("<i class='fas fa-toggle-on' aria-hidden='true' status='Active'></i>");
+               }
+            },error:function(){
+                alert("Error");
+            }
+        });
+
+    });
+
     //Update Brand Status
 
     

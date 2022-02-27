@@ -95,6 +95,15 @@
     });
   });
 </script>
+{{-- Banners DataTable --}}
+<script>
+  $(function () {
+    $("#banners").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+  });
+</script>
 {{-- Brands DataTable --}}
 <script>
   $(function () {

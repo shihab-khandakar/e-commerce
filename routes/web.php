@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\BannersController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SectionController;
 use App\Http\Controllers\front\IndexController;
+use App\Http\Controllers\front\ProductController as FrontProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,6 +79,12 @@ Route::prefix('admin')->group( function(){
         Route::post('/update-image-status',[ProductController::class, 'updateImageStatus']);
         Route::get('/delete-image/{id}',[ProductController::class, 'deleteImage']);
 
+        // This Route for Banners Panel
+        Route::get('banners',[BannersController::class, 'banners']);
+        Route::post('/update-banner-status',[BannersController::class, 'updateBannerStatus']);
+        Route::match(['get', 'post'],'add-edit-banner/{id?}',[BannersController::class, 'addEditBanner']);
+        Route::get('/delete-banner/{id}',[BannersController::class, 'deleteBanner']);
+
 
     });
 
@@ -85,7 +93,9 @@ Route::prefix('admin')->group( function(){
 
 // All The Front Route defain here
 
-    
+//this route for home page    
 Route::get('/',[IndexController::class, 'index']);
+//this route for listing page
+Route::get('/{url}',[FrontProductController::class, 'listing']);
 
 
