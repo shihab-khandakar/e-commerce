@@ -51,6 +51,8 @@
 <script src="{{asset('/js/front_js/google-code-prettify/prettify.js')}}"></script>
 
 <script src="{{asset('/js/front_js/front.js')}}"></script>
+{{-- This is the custom front script.js file --}}
+<script src="{{asset('/js/front_js/front_script.js')}}"></script>
 <script src="{{asset('/js/front_js/jquery.lightbox-0.5.js')}}"></script>
 
 </body>

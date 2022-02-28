@@ -8,8 +8,8 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SectionController;
 use App\Http\Controllers\front\IndexController;
 use App\Http\Controllers\front\ProductController as FrontProductController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 
 

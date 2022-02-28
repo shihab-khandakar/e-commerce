@@ -12,97 +12,32 @@
         {{$categoryDetails['catDetails']['description']}}
     </p>
     <hr class="soft"/>
-    <form class="form-horizontal span6">
+    <form name="sortProducts" id="sortProducts" class="form-horizontal span6">
+        <input type="hidden" name="url" id="url" value="{{$url}}">
         <div class="control-group">
             <label class="control-label alignL">Sort By </label>
-            <select>
-                <option>Product name A - Z</option>
-                <option>Product name Z - A</option>
-                <option>Product Stoke</option>
-                <option>Price Lowest first</option>
+            <select name="sort" id="sort">
+                <option value="">Select</option>
+                <option value="product_latest" @if(isset($_GET['sort']) && $_GET['sort']=='product_latest') selected="" @endif>Latest product</option>
+                <option value="product_name_a_z" @if(isset($_GET['sort']) && $_GET['sort']=='product_name_a_z') selected="" @endif>Product name A - Z</option>
+                <option value="product_name_z_a" @if(isset($_GET['sort']) && $_GET['sort']=='product_name_z_a') selected="" @endif>Product name Z - A</option>
+                <option value="price_lowest" @if(isset($_GET['sort']) && $_GET['sort']=='price_lowest') selected="" @endif>Lowest Price first</option>
+                <option value="price_highest" @if(isset($_GET['sort']) && $_GET['sort']=='price_highest') selected="" @endif>Highest Price first</option>
             </select>
         </div>
     </form>
     
-    <div id="myTab" class="pull-right">
-        <a href="#listView" data-toggle="tab"><span class="btn btn-large"><i class="icon-list"></i></span></a>
-        <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="icon-th-large"></i></span></a>
-    </div>
     <br class="clr"/>
-    <div class="tab-content">
-        <div class="tab-pane" id="listView">
-            @foreach ($categoryProduct as $product)
-                <div class="row">
-                    <div class="span2">
-                        <?php $product_image_path = 'images/product_images/small/'.$product['main_image']; ?>
-                            @if (!empty($product['main_image']) && file_exists($product_image_path))
-                            <img src="{{asset('images/product_images/small/'.$product['main_image'])}}" alt="">
-                            @else
-                            <img src="{{asset('images/product_images/small/No-Image.png')}}" alt="">
-                            @endif
-                    </div>
-                    <div class="span4">
-                        <h3>{{$product['product_name']}}</h3>
-                        <hr class="soft"/>
-                        <h5>{{$product['brand']['name']}} </h5>
-                        <p>{{$product['description']}}</p>
-                        <a class="btn btn-small pull-right" href="product_details.html">View Details</a>
-                        <br class="clr"/>
-                    </div>
-                    <div class="span3 alignR">
-                        <form class="form-horizontal qtyFrm">
-                            <h3> BDT.{{$product['product_price']}}</h3>
-                            <label class="checkbox">
-                                <input type="checkbox">  Adds product to compare
-                            </label><br/>
-                            
-                            <a href="product_details.html" class="btn btn-large btn-primary"> Add to <i class=" icon-shopping-cart"></i></a>
-                            <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
-                            
-                        </form>
-                    </div>
-                </div>
-                <hr class="soft"/>
-            @endforeach
-        </div>
-        <div class="tab-pane  active" id="blockView">
-            <ul class="thumbnails">
-                @foreach ($categoryProduct as $product)
-                <li class="span3">
-                    <div class="thumbnail">
-                        <a href="product_details.html">
-                            <?php $product_image_path = 'images/product_images/small/'.$product['main_image']; ?>
-                            @if (!empty($product['main_image']) && file_exists($product_image_path))
-                            <img src="{{asset('images/product_images/small/'.$product['main_image'])}}" alt="">
-                            @else
-                            <img src="{{asset('images/product_images/small/No-Image.png')}}" alt="">
-                            @endif
-                        </a>
-                        <div class="caption">
-                            <h5>{{$product['product_name']}}</h5>
-                            <p>
-                                {{$product['brand']['name']}}
-                            </p>
-                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">BDT.{{$product['product_price']}}</a></h4>
-                        </div>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-            <hr class="soft"/>
-        </div>
+    <div class="tab-content filter_products">
+        @include('front.products.ajax_products_listing')
     </div>
     <a href="compair.html" class="btn btn-large pull-right">Compair Product</a>
     <div class="pagination">
-        <ul>
-            <li><a href="#">&lsaquo;</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">...</a></li>
-            <li><a href="#">&rsaquo;</a></li>
-        </ul>
+        @if(isset($_GET['sort']) && !empty($_GET['sort']))
+            {{$categoryProduct->appends(['sort' => $_GET['sort']])->links()}}
+        @else
+            {{$categoryProduct->Links()}}
+        @endif
     </div>
     <br class="clr"/>
 </div>
