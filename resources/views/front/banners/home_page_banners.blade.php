@@ -6,7 +6,7 @@
 ?>
 
 
-@if (isset($page_name) && $page_name = 'index')
+@if (isset($page_name) && $page_name == 'index')
 
 	<div id="carouselBlk">
 		<div id="myCarousel" class="carousel slide">

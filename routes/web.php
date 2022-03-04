@@ -93,9 +93,23 @@ Route::prefix('admin')->group( function(){
 
 // All The Front Route defain here
 
-//this route for home page    
-Route::get('/',[IndexController::class, 'index']);
-//this route for listing page
-Route::get('/{url}',[FrontProductController::class, 'listing']);
+use App\Models\Category;
+
+Route::namespace('front')->group( function(){
+
+    //this route for home page    
+    Route::get('/',[IndexController::class, 'index']);
+
+    // get category url
+    $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
+    // echo '<pre>';print_r($catUrls);die;
+        foreach($catUrls as $url) {
+            //this route for listing page
+            Route::get('/'.$url,[FrontProductController::class, 'listing']);
+        }
+
+});
+
+
 
 

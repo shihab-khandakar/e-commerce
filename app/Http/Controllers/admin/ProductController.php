@@ -180,13 +180,14 @@ class ProductController extends Controller
 
         }
 
-        //Filter Array
-
-        $febricArray = array('Cotton','Polyester','Wool');
-        $sleeveArray = array('Full Sleeve','Half Sleeve','Short Sleeve','Sleeveless');
-        $patternArray = array('Checked','Plain','Printed','Self','Solid');
-        $fitArray = array('Regular','Slim');
-        $occasionArray = array('Casual','Formal');
+        //Product Filters
+        $productFilters = Product::productFilters();
+        // echo "<pre>";print_r($productFilters);die;
+        $fabricArray = $productFilters['fabricArray'];
+        $sleeveArray = $productFilters['sleeveArray'];
+        $patternArray = $productFilters['patternArray'];
+        $fitArray = $productFilters['fitArray'];
+        $occasionArray = $productFilters['occasionArray'];
 
         // Section With Categories and Subcategories
 
@@ -200,7 +201,7 @@ class ProductController extends Controller
         $brands = json_decode(json_encode($brands), true);
 
 
-        return view('admin.products.add_edit_product',compact('title','febricArray','sleeveArray','patternArray','fitArray','occasionArray','categories','productdata','brands'));
+        return view('admin.products.add_edit_product',compact('title','fabricArray','sleeveArray','patternArray','fitArray','occasionArray','categories','productdata','brands'));
 
 
     }

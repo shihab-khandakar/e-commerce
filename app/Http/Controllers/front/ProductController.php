@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Pagination\Paginator;
 
 class ProductController extends Controller
 {
     
-    public function listing($url, Request $request){
+    public function listing(Request $request){
+        Paginator::useBootstrap();
 
         if($request->ajax()){
 
@@ -25,7 +28,32 @@ class ProductController extends Controller
                 $categoryProduct = Product::with('brand')->whereIn('category_id',$categoryDetails['catIds'])->where('status',1);
                 // echo '<pre>';print_r($categoryProduct);die;
 
-                // If Sort options selected bt users
+                // If fabric filters are selected
+                if(isset($data['fabric']) && !empty($data['fabric'])){
+                    $categoryProduct->whereIn('products.fabric', $data['fabric']);
+                }
+
+                // If pattern filters are selected
+                if(isset($data['pattern']) && !empty($data['pattern'])){
+                    $categoryProduct->whereIn('products.pattern', $data['pattern']);
+                }
+
+                // If sleeve filters are selected
+                if(isset($data['sleeve']) && !empty($data['sleeve'])){
+                    $categoryProduct->whereIn('products.sleeve', $data['sleeve']);
+                }
+
+                // If fit filters are selected
+                if(isset($data['fit']) && !empty($data['fit'])){
+                    $categoryProduct->whereIn('products.fit', $data['fit']);
+                }
+
+                // If occasion filters are selected
+                if(isset($data['occasion']) && !empty($data['occasion'])){
+                    $categoryProduct->whereIn('products.occasion', $data['occasion']);
+                }
+
+                // If Sort filters are selected
                 if(isset($data['sort']) && !empty($data['sort'])){
                     if($data['sort']== 'product_latest'){
                         $categoryProduct->orderBy('id', 'Desc');
@@ -52,7 +80,8 @@ class ProductController extends Controller
 
 
         }else{
-
+            $url = Route::getFacadeRoot()->current()->uri();
+            // echo '<pre>';print_r($url);die;
             $categoryCount = Category::where(['url'=>$url,'status'=> 1])->count();
             if ($categoryCount> 0){
                 // echo 'Category exists';die;
@@ -60,9 +89,22 @@ class ProductController extends Controller
                 // echo '<pre>';print_r($categoryDetails);die;
                 $categoryProduct = Product::with('brand')->whereIn('category_id',$categoryDetails['catIds'])->where('status',1);
                 // echo '<pre>';print_r($categoryProduct);die;
-                $categoryProduct = $categoryProduct->paginate(25);
+                $categoryProduct = $categoryProduct->paginate(5);
 
-                return view('front.products.listing',compact('categoryDetails','categoryProduct','url'));
+
+                //Product Filters
+                $productFilters = Product::productFilters();
+                // echo "<pre>";print_r($productFilters);die;
+                $fabricArray = $productFilters['fabricArray'];
+                $sleeveArray = $productFilters['sleeveArray'];
+                $patternArray = $productFilters['patternArray'];
+                $fitArray = $productFilters['fitArray'];
+                $occasionArray = $productFilters['occasionArray'];
+
+
+                $page_name = 'listing';
+
+                return view('front.products.listing',compact('categoryDetails','categoryProduct','url','fabricArray','sleeveArray','patternArray','fitArray','occasionArray','page_name'));
             }else{
                 abort(404);
             }
