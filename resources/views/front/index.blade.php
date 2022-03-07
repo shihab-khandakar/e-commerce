@@ -14,7 +14,7 @@
                             <li class="span3">
                                 <div class="thumbnail">
                                     <i class="tag"></i>
-                                    <a href="product_details.html">
+                                    <a href="#">
                                         <?php $product_image_path = 'images/product_images/small/'.$item['main_image']; ?>
                                         @if (!empty($item['main_image']) && file_exists($product_image_path))
                                         <img src="{{asset('images/product_images/small/'.$item['main_image'])}}" alt="">
@@ -43,7 +43,7 @@
         @foreach ($newProducts as $product)
         <li class="span3">
             <div class="thumbnail">
-                <a  href="product_details.html">
+                <a  href="{{url('product/'.$product['id'])}}">
                     <?php $product_image_path = 'images/product_images/small/'.$product['main_image']; ?>
                     @if (!empty($product['main_image']) && file_exists($product_image_path))
                     <img style="width:150px" src="{{asset('images/product_images/small/'.$product['main_image'])}}" alt="">

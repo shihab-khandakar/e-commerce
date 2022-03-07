@@ -5,6 +5,7 @@ namespace App\Http\Controllers\front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Pagination\Paginator;
@@ -89,7 +90,7 @@ class ProductController extends Controller
                 // echo '<pre>';print_r($categoryDetails);die;
                 $categoryProduct = Product::with('brand')->whereIn('category_id',$categoryDetails['catIds'])->where('status',1);
                 // echo '<pre>';print_r($categoryProduct);die;
-                $categoryProduct = $categoryProduct->paginate(5);
+                $categoryProduct = $categoryProduct->paginate(25);
 
 
                 //Product Filters
@@ -114,5 +115,30 @@ class ProductController extends Controller
         
 
     }
+
+
+    public function productDetail($id){
+
+        $productDetails = Product::with('category','brand','attributes','images')->find($id)->toArray();
+        // dd($productDetails);
+        $totla_stock = ProductAttribute::where('product_id',$id)->sum('stock');
+        $relatedProduct = Product::with('brand')->where('category_id',$productDetails['category']['id'])->where('id','!=',$id)->Limit(3)->inRandomOrder()->get()->toArray();
+        // echo "<pre>";print_r($relatedProduct);die;
+        return view('front.products.details',compact('productDetails','totla_stock','relatedProduct'));
+
+    }
+
+
+    public function getProductPrice(Request $request){
+
+        if($request->ajax()){
+            $data = $request->all();
+            // echo '<pre>';print_r($data);die;
+            $getProductPrice = ProductAttribute::where(['product_id'=>$data['product_id'],'size'=>$data['size']])->first();
+            return $getProductPrice->price;
+        }
+
+    }
+
 
 }

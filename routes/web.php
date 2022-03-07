@@ -91,6 +91,7 @@ Route::prefix('admin')->group( function(){
 });
 
 
+
 // All The Front Route defain here
 
 use App\Models\Category;
@@ -107,6 +108,11 @@ Route::namespace('front')->group( function(){
             //this route for listing page
             Route::get('/'.$url,[FrontProductController::class, 'listing']);
         }
+    
+    // Products Details Route
+    Route::get('/product/{id}',[FrontProductController::class, 'productDetail']);
+    //get product attribute price
+    Route::post('/get-product-price',[FrontProductController::class, 'getProductPrice']);
 
 });
 

@@ -1,4 +1,10 @@
 $(document).ready(function() {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     
     // sorting file latest product a-z product low price high price with ajax
     $("#sort").on("change",function() {
@@ -153,6 +159,28 @@ $(document).ready(function() {
         });
         return filter;
     }
+
+    // price change
+
+    $("#getPrice").change(function(){
+        var size = $(this).val();
+        if(size==""){
+            alert('Please Select Size');
+            return false;
+        }
+        var product_id = $(this).attr("product-id");
+        $.ajax({
+            url:'/get-product-price',
+            type: "POST",
+            data:{size: size,product_id: product_id},
+            success: function(response){
+                $(".getAttrPrice").html('BDT. '+response);
+            },
+            error:function(){
+                alert("Error");
+            }
+        });
+    });
 
 
 });
