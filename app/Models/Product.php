@@ -49,4 +49,50 @@ class Product extends Model
     }
 
 
+    public static function getDiscountPrice($product_id){
+
+        $productDetails = Product::select('product_price','product_discount','category_id')->where('id',$product_id)->first()->toArray();
+        $categoryDetails = Category::select('category_discount')->where('id',$productDetails['category_id'])->first()->toArray();
+
+        if($productDetails['product_discount']>0){
+            // if product discount is added form admin panel
+            $discounted_price = $productDetails['product_price'] - ( $productDetails['product_price'] * $productDetails['product_discount'] / 100);
+        }else if($categoryDetails['category_discount']>0){
+            // if product discount is not added and category discount added form admin panel
+            $discounted_price = $productDetails['product_price'] - ( $productDetails['product_price'] * $categoryDetails['category_discount'] / 100);
+
+        }else{
+            $discounted_price = 0;
+        }
+
+        return $discounted_price;
+
+    }
+
+
+    public static function getDiscountAttrPrice($product_id,$size){
+
+        $productAttrPrice = ProductAttribute::where(['product_id'=>$product_id, 'size'=>$size])->first()->toArray();
+        $productDetails = Product::select('product_discount','category_id')->where('id',$product_id)->first()->toArray();
+        $categoryDetails = Category::select('category_discount')->where('id',$productDetails['category_id'])->first()->toArray();
+
+        if($productDetails['product_discount']>0){
+            // if product discount is added form admin panel
+            $final_price = $productAttrPrice['price'] - ( $productAttrPrice['price'] * $productDetails['product_discount'] / 100);
+            $discount = $productAttrPrice['price'] - $final_price;
+        }else if($categoryDetails['category_discount']>0){
+            // if product discount is not added and category discount added form admin panel
+            $final_price = $productAttrPrice['price'] - ( $productAttrPrice['price'] * $categoryDetails['category_discount'] / 100);
+            $discount = $productAttrPrice['price'] - $final_price;
+
+        }else{
+            $final_price = $productAttrPrice['price'];
+            $discount = 0;
+        }
+
+        return array('product_price'=>$productAttrPrice['price'],'final_price'=>$final_price,'discount'=>$discount);
+
+    }
+
+
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\front\IndexController;
 use App\Http\Controllers\front\ProductController as FrontProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\front\UserController;
 
 
 
@@ -113,6 +114,17 @@ Route::namespace('front')->group( function(){
     Route::get('/product/{id}',[FrontProductController::class, 'productDetail']);
     //get product attribute price
     Route::post('/get-product-price',[FrontProductController::class, 'getProductPrice']);
+    // add to cart route
+    Route::post('/add-to-cart',[FrontProductController::class, 'addToCart']);
+    // Shoping Cart route
+    Route::get('/cart',[FrontProductController::class, 'cart']);
+    // update cart item qty
+    Route::post('/update-cart-item-qty',[FrontProductController::class, 'updateCartItemQty']);
+    // Delete cart item
+    Route::post('/delete-cart-item',[FrontProductController::class, 'deleteCartItem']);
+
+    // user route start
+    Route::get('/login-register',[UserController::class, 'loginRegister']);
 
 });
 

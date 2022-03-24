@@ -18,7 +18,7 @@ $(document).ready(function() {
        
        $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -90,7 +90,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -114,7 +114,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -138,7 +138,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: url,
-            method: "POST",
+            type: "POST",
             data:{fabric: fabric,sleeve:sleeve,pattern: pattern,fit:fit,occasion:occasion,sort: sort,url: url},
             success: function(data) {
                 $(".filter_products").html(data);
@@ -174,12 +174,76 @@ $(document).ready(function() {
             type: "POST",
             data:{size: size,product_id: product_id},
             success: function(response){
-                $(".getAttrPrice").html('BDT. '+response);
+                if(response['discount'] > 0){
+                    $(".getAttrPrice").html("<del>BDT. "+response['product_price']+"</del>BDT. "+response['final_price']);
+                }else{
+                    $(".getAttrPrice").html("BDT. "+response['product_price']);
+                }
+                
             },
             error:function(){
                 alert("Error");
             }
         });
+    });
+
+    // Update Cart Items
+    $(document).on('click','.btnItemUpdate',function(){
+
+        if($(this).hasClass('qtyMinus')){
+            //if qtyMinus button click by user
+            var quantity = $(this).prev().val();
+            if(quantity == 1){
+                alert("Item quantity must be 1 or greater");
+                return false;
+            }else{
+                new_qty = parseInt(quantity)-1;
+            }
+            
+        }
+
+        if($(this).hasClass('qtyPlus')){
+            //if qtyMinus button click by user
+            var quantity = $(this).prev().prev().val();
+            new_qty = parseInt(quantity)+1;
+        }
+        var cartid = $(this).data("cartid");
+        $.ajax({
+            url: '/update-cart-item-qty',
+            type: 'post',
+            data: { cartid: cartid ,quantity: new_qty},
+            success: function(response){
+                if(response.status == false){
+                    alert(response.message);
+                }
+                $('#appendCartItems').html(response.view);
+            },
+            error:function(){
+                alert("Error");
+            }
+
+        });
+    });
+
+    // Delete Cart Items
+    $(document).on('click','.btnItemDelete',function(){
+        var cartid = $(this).data("cartid");
+        var result = confirm("Want to delete this cart item");
+        if (result) {
+            $.ajax({
+                url: '/delete-cart-item',
+                type: 'post',
+                data: { cartid: cartid},
+                success: function(response){
+                    $('#appendCartItems').html(response.view);
+                },
+                error:function(){
+                    alert("Error");
+                }
+    
+            });
+        }
+        
     });
 
 

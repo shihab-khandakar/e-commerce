@@ -1,3 +1,4 @@
+<?php use App\Models\Product; ?>
 @extends('layouts.front_layout.front_layout')
 @section('content')
 
@@ -24,7 +25,17 @@
                                     </a>
                                     <div class="caption">
                                         <h5>{{$item['product_name']}}</h5>
-                                        <h4><a class="btn" href="product_details.html">VIEW</a> <span class="pull-right">BDT.{{$item['product_price']}}</span></h4>
+                                        <?php $discounted_price = Product::getDiscountPrice($item['id']); ?>
+                                        <h4><a class="btn" href="product_details.html">VIEW</a> 
+                                            <span class="pull-right" style="font-size:11px">
+                                                @if ($discounted_price>0)
+                                                    <del>BDT.{{$item['product_price']}}</del>
+                                                    <font color="red"> BDT. {{$discounted_price}}</font>
+                                                @else
+                                                    BDT.{{$item['product_price']}}
+                                                @endif
+                                            </span>
+                                        </h4>
                                     </div>
                                 </div>
                             </li>
@@ -56,8 +67,17 @@
                     <p>
                         {{$product['product_code']}} ({{$product['product_color']}})
                     </p>
+                    <?php $discounted_price = Product::getDiscountPrice($product['id']); ?>
+                    <h4 style="text-align:center">{{--<a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> --}}<a class="btn" href="{{url('product/'.$product['id'])}}">Add to <i class="icon-shopping-cart"></i></a> <br> <a class="btn btn-primary">
+                        @if ($discounted_price>0)
+                            <del>BDT.{{$product['product_price']}}</del>
+                            <font color="yellow"> BDT. {{$discounted_price}}</font>
+                        @else
+                            BDT.{{$product['product_price']}}
+                        @endif
                     
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">BDT.{{$product['product_price']}}</a></h4>
+                    </a></h4>
+                    
                 </div>
             </div>
         </li>

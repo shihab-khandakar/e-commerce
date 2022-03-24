@@ -1,3 +1,4 @@
+<?php use App\Models\Product; ?>
 @extends('layouts.front_layout.front_layout')
 @section('content')
 
@@ -30,8 +31,8 @@
                 </div>
                 <!--
                     <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-        -->
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                -->
             </div>
 
             <div class="btn-toolbar">
@@ -50,21 +51,31 @@
             <small>{{$productDetails['brand']['name']}}</small>
             <hr class="soft" />
             <small>{{$totla_stock}} items in stock</small>
-            <form class="form-horizontal qtyFrm">
+            <form action="{{url('add-to-cart')}}" method="post" class="form-horizontal qtyFrm">
+                @csrf
+                <input type="hidden" name="product_id" value="{{$productDetails['id']}}">
                 <div class="control-group">
-                    <h4 class="getAttrPrice">BDT. {{$productDetails['product_price']}}</h4>
-                    <select name="size" id="getPrice" product-id="{{$productDetails['id']}}" class="span2 pull-left">
+                    <?php $discounted_price = Product::getDiscountPrice($productDetails['id']); ?>
+                    <h4 class="getAttrPrice">
+                        @if ($discounted_price>0)
+                            <del>BDT. {{$productDetails['product_price']}}</del> BDT. {{$discounted_price}}
+                        @else
+                            BDT. {{$productDetails['product_price']}}
+                        @endif
+                    </h4>
+                    <select name="size" id="getPrice" product-id="{{$productDetails['id']}}" class="span2 pull-left" required>
                         <option value="">Select Size</option>
                         @foreach ($productDetails['attributes'] as $attribute)
                         <option value="{{$attribute['size']}}">{{$attribute['size']}}</option>
                         @endforeach
                     </select>
-                    <input type="number" class="span1" placeholder="Qty." />
+                    <input type="number" name="quantity" class="span1" placeholder="Qty." required/>
                     <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i
                             class=" icon-shopping-cart"></i></button>
                 </div>
+            </form>
         </div>
-        </form>
+        
 
         <hr class="soft clr" />
         <p class="span6">
@@ -175,7 +186,8 @@
                                             {{$product['brand']['name']}}
                                         </p>
                                         <h4 style="text-align:center">
-                                            <a class="btn" href="{{url('product/'.$product['id'])}}"> <i class="icon-zoom-in"></i></a> 
+                                            <a class="btn" href="{{url('product/'.$product['id'])}}"> <i
+                                                    class="icon-zoom-in"></i></a>
                                             <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
                                             <a class="btn btn-primary" href="#">BDT. {{$product['product_price']}}</a>
                                         </h4>

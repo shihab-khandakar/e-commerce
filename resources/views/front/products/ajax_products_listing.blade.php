@@ -1,3 +1,4 @@
+<?php use App\Models\Product; ?>
 <div class="tab-pane  active" id="blockView">
     <ul class="thumbnails">
         @foreach ($categoryProduct as $product)
@@ -9,7 +10,7 @@
                     @else
                     <?php $product_image_path = ""; ?>
                     @endif
-                    
+
                     @if (!empty($product['main_image']) && file_exists($product_image_path))
                     <img src="{{asset('images/product_images/small/'.$product['main_image'])}}" alt="">
                     @else
@@ -21,12 +22,31 @@
                     <p>
                         {{$product['brand']['name']}}
                     </p>
-                    <h4 style="text-align:center"><a class="btn" href="{{url('product/'.$product['id'])}}"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">BDT.{{$product['product_price']}}</a></h4>
-                    
+                    <?php $discounted_price = Product::getDiscountPrice($product['id']); ?>
+                    <h4 style="text-align:center">
+                        <a class="btn" href="{{url('product/'.$product['id'])}}"> 
+                            <i class="icon-zoom-in"></i>
+                        </a> 
+                        <a class="btn" href="#">Add to 
+                            <i class="icon-shopping-cart"></i>
+                        </a> 
+                        <a class="btn btn-primary" href="#">
+                            @if ($discounted_price>0)
+                                <del>BDT.{{$product['product_price']}}</del>
+                            @else
+                                BDT.{{$product['product_price']}}
+                            @endif
+                        </a>
+                    </h4>
+                    @if ($discounted_price>0)
+                    <h4 style="text-align:center">
+                        <font color="red"> Discounted Price: BDT. {{$discounted_price}}</font>
+                    </h4>
+                    @endif
                 </div>
             </div>
         </li>
         @endforeach
     </ul>
-    <hr class="soft"/>
+    <hr class="soft" />
 </div>

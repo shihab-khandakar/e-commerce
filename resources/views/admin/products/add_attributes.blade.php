@@ -78,6 +78,10 @@
                                     <label for="product-color">product Color:</label>&nbsp;&nbsp;
                                     {{$productdata['product_color']}}
                                 </div>
+                                <div class="form-group">
+                                    <label for="product-price">product Price:</label>&nbsp;&nbsp;
+                                    {{$productdata['product_price']}}
+                                </div>
 
                                 <div class="form-group">
                                     <div class="field_wrapper">
